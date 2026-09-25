@@ -11,6 +11,7 @@
 | 中文产出 | 255,875 字符 |
 | 术语表 | **100 条**术语 + 47 条强制保留英文词 |
 | 占位符泄漏 | 0 处 |
+| 术语一致性违规 | **0**（含验收点名的 Vibe Coding / Scaffolding / Context Engineering，见第八节） |
 | 翻译引擎 | DeepSeek（`deepseek-flash`），密钥仅经环境变量注入 |
 
 ## 一、目录结构
@@ -24,10 +25,11 @@ C1-Translation-Pipeline/
 │  ├─ AI日志.md               # 每日 AI 协作日志（工具 / prompt / 踩坑）
 │  ├─ AAR-七维复盘.md         # 七维 AAR 复盘
 │  ├─ 拿来说明-01…03.md       # 3 个关键决策的完整证据链
-│  └─ zh/                     # 34 篇中文译文（*.zh.md）
+│  └─ zh/                     # 34 个中文文件 = 30 篇译文 + 4 篇上游缺口说明
 ├─ quality/                   # 质量证据（可复核）
 │  ├─ coverage.md             # 逐篇段落覆盖度
 │  ├─ terminology_report.md   # 逐篇术语落地检查
+│  ├─ 术语三词一致性审计.md   # 验收点名三词的逐篇核对（0 违规）
 │  └─ 抽检报告.md             # Han 占比 / 占位符 / 修复闭环
 ├─ tools/                     # 流水线脚本 01→11 + glossary.json
 └─ work/                      # 中间产物（可重建，不入库）
@@ -96,18 +98,36 @@ python tools/11_report.py
 | 4 篇上游不可获取 | `how-warp-uses-warp`（Notion 需 JS）、`good-context-good-code`（Ghost 访问码墙）、`peeking-under-the-hood-of-claude-code`（Medium 拦截）、`lessons-from-ai-code-reviews`（源文件为空） | 合计 ≈970 字符，占源正文 **0.16%**；`dist/zh/` 内保留占位说明，**未编造译文** |
 | 4 项术语未落地 | spec / test coverage / telemetry / memory | 经核查为假阳性（命中 `OpenTelemetry` 等专有名词内部或代码块），明细见 `quality/terminology_report.md` |
 | 3.1% 段落未译 | 170 段被规则跳过 | 纯代码 / 表格分隔 / URL 行，跳过是为保护 Markdown 格式 |
+| `owasp-top-ten` Han 占比偏低（20.6%） | OWASP 条目名、缩写与代码片段密度高，术语表要求这类词保留英文 | **术语保护的结果，不是漏译**；该篇译文 11,540 字符，为完整全文 |
 
-## 七、交付物与评分自检
+## 七、交付物与验收要点自检
 
 | 挑战要求 | 本包对应文件 | 状态 |
 |---|---|---|
-| `README.md` | `dist/README.md` | ✅ |
+| `README.md` | 仓库根 `README.md` + `dist/README.md`（本文件） | ✅ |
 | `*AI日志*` | `dist/AI日志.md` | ✅ |
 | `*AAR*`（七维） | `dist/AAR-七维复盘.md` | ✅ |
-| `*拿来说明*` ≥3 个 | `dist/拿来说明-01/02/03.md` | ✅ 3 个 |
-| 术语表 ≥50 条且全文一致 | `dist/术语表.md`（100 条） | ✅ |
-| 覆盖度 ≥80% | `quality/coverage.md`（97.1%） | ✅ |
-| 流水线可复跑 | `tools/01→11` + 本文第三节 | ✅ |
-| 陌生人可独立使用 | 本文第二节 3 分钟上手 | ✅ |
+| `*拿来说明*` ≥3 个（原文 / prompt / 产出 / 对比） | `dist/拿来说明-01/02/03.md` | ✅ 3 个 |
+| 术语表 ≥50 条且**全文一致** | `dist/术语表.md`（100 条 + 47 条不译词）、`quality/术语三词一致性审计.md`（**0 违规**） | ✅ |
+| 覆盖课程主体内容 ≥80% | `quality/coverage.md`（段落级 **97.1%**；30/34 篇完整译文） | ✅ |
+| 流水线可复跑 / 换课可复用 | `tools/01→11` + `glossary.json`，见本文第三、四节 | ✅ |
+| 陌生人可独立使用 | 根 `README.md` §2 目录结构 + §3 三分钟上手 + 本文第二节 | ✅ |
 
-> 红线条目（交付物缺失、无 AI 日志 / AAR）逐项已核对：**均不存在**。
+> 红线条目（① 必需交付物缺失 ② 无 AI 日志 / AAR）逐项已核对：**均不存在**。
+
+## 八、验收点名术语的一致性证据
+
+验收要点点名要求 `Vibe Coding` / `Scaffolding` / `Context Engineering` 的译法统一。`tools/_term_audit.py` 对 34 个中文文件做全量扫描：
+
+| 术语 | 术语表规定 | 术语表外变体命中 | 结论 |
+|---|---|---|---|
+| Vibe Coding | 保留英文 `Vibe Coding` | 0 | 一致 |
+| Scaffolding | **脚手架** | 0 | 一致 |
+| Context Engineering | **上下文工程** | 0 | 一致 |
+| Context Rot（对照组） | **上下文腐化** | 0 | 一致 |
+
+**结论：0 违规**——三词在全部译文中各自只对应术语表规定的唯一译法，无变体、无误译。逐篇明细、词面计数差异的原因（源文变形词 / 译文重复一次术语 / 源文用别的说法而译文落标准词）以及复现命令，见 [`quality/术语三词一致性审计.md`](../quality/术语三词一致性审计.md)。
+
+```powershell
+python tools/_term_audit.py     # 只读扫描，输出可与上表逐条比对
+```

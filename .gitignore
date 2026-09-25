@@ -5,3 +5,4 @@ __pycache__/
 # 含 API Key 的本地探测脚本（严禁入库）
 _probe*.py
 tools/_*.py
+!tools/_term_audit.py

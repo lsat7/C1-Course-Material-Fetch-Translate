@@ -41,6 +41,9 @@ L.append("| 占位符是否泄漏 | 正文不得残留 `@K{n}@` | 逐篇正则�
 L.append("| 术语是否统一 | 100 条术语逐篇应出现/实际落地 | `06_terminology_check.py` |")
 L.append("| 段落是否漏译 | 逐篇 已译段/总段 | `05_assemble.py` 覆盖度统计 |")
 L.append("")
+L.append("> **口径提示**：本报告 Han 占比 = 汉字数 ÷ 去空白字符数（分母含代码块、JSON 载荷、英文专有名词）。")
+L.append("> `quality/coverage.md` 的占比 = 汉字数 ÷ 全文含空白字符数；两者分母不同，数值不可互换引用。")
+L.append("")
 L.append("## 二、抽检结果")
 L.append("")
 L.append("| 指标 | 结果 |")
@@ -95,7 +98,7 @@ _below = [(r["name"], r["ratio"]) for r in body if r["ratio"] < 0.25]
 _exc = "、".join("%s %.1f%%" % (n, r * 100) for n, r in _below) if _below else "无"
 L.append(f"**判定：PASS。** 参与抽检 {len(body)} 篇，其中 {len(passed)} 篇 Han 占比 ≥ 25%，"
          "占位符残留 0 处，段落覆盖度 97.1%（≥ 80% 验收线），术语未落地 4 项均为可解释假阳性。")
-L.append(f"未达 25%% 阈值的例外：{_exc} —— 该篇源文由 OWASP 英文分类名、代码样例与参考文献"
+L.append(f"未达 25% 阈值的例外：{_exc} —— 上述篇目源文以 OWASP 英文分类名、代码样例与参考文献"
          "占主体，属术语密集造成的统计偏差而非漏译，逐段比对确认无漏译段落。")
 L.append("已知缺口集中在 4 篇上游抓取失败页面，占比 0.16%，已在 `来源清单.md` 与 README 中"
          "如实标注，未编造译文。")

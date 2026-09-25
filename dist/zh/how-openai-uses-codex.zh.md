@@ -1,6 +1,6 @@
 <!-- source: pdfs/how-openai-uses-codex.pdf pages=13 -->
 
-# how-openai-uses-codex
+# OpenAI 如何使用 Codex
 
 OpenAI 如何使用 Codex
 已合并

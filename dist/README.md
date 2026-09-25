@@ -7,8 +7,8 @@
 | 源文档 | 34 篇（HTML 页面 + PDF 讲义） |
 | 有效中文译文 | 30 篇（另有 4 篇上游不可获取，见「已知缺口」） |
 | 段落覆盖度 | **97.1%**（5,653 / 5,823 段） |
-| 源正文字符 | 591,975 |
-| 中文产出 | 255,875 字符 |
+| 源正文字符 | 591,975（盘点口径）/ 633,993（分段口径） |
+| 中文产出 | 270,210 字符（其中汉字 151,643） |
 | 术语表 | **100 条**术语 + 47 条强制保留英文词 |
 | 占位符泄漏 | 0 处 |
 | 术语一致性违规 | **0**（含验收点名的 Vibe Coding / Scaffolding / Context Engineering，见第八节） |
@@ -30,8 +30,9 @@ C1-Translation-Pipeline/
 │  ├─ coverage.md             # 逐篇段落覆盖度
 │  ├─ terminology_report.md   # 逐篇术语落地检查
 │  ├─ 术语三词一致性审计.md   # 验收点名三词的逐篇核对（0 违规）
+│  ├─ 校对修正记录.md         # 排版修正清单（规则 / 涉及文件 / 可重放）
 │  └─ 抽检报告.md             # Han 占比 / 占位符 / 修复闭环
-├─ tools/                     # 流水线脚本 01→11 + glossary.json
+├─ tools/                     # 流水线脚本 01→13 + glossary.json
 └─ work/                      # 中间产物（可重建，不入库）
 ```
 
@@ -57,6 +58,8 @@ C1-Translation-Pipeline/
 | `09_retranslate.py` | 漏译/低质量段落定点补译 | **是** |
 | `10_finalize.py` | 生成 `术语表.md` / `来源清单.md` | 否 |
 | `11_report.py` | 生成 `质量抽检报告` | 否 |
+| `12_metrics.py` | 重算覆盖度与字符指标（`quality/coverage.md`） | 否 |
+| `13_proofread_fixes.py` | 排版修正（标题 / 围栏）+ 生成 `quality/校对修正记录.md` | 否 |
 
 **运行方式**（模型相关步骤才需要密钥，脚本不硬编码任何凭据）：
 
@@ -72,13 +75,15 @@ python tools/05_assemble.py
 python tools/08_verify.py
 python tools/10_finalize.py
 python tools/11_report.py
+python tools/12_metrics.py
+python tools/13_proofread_fixes.py
 ```
 
 ## 四、换一门课怎么复用（验收要点：换源可复用）
 
 1. 把新课程资料放进任意目录，改 `01_inventory.py` 的根路径常量；
 2. 用新课程的术语重写 `tools/glossary.json`（结构：`terms` + `do_not_translate`）；
-3. 依次跑 `01 → 11`。分段、占位符保护、回填、门禁、报告全部与课程无关，
+3. 依次跑 `01 → 13`。分段、占位符保护、回填、门禁、报告全部与课程无关，
    只有**术语表和资料路径**是课程相关的两个输入。
 
 ## 五、术语与质量策略
@@ -110,7 +115,7 @@ python tools/11_report.py
 | `*拿来说明*` ≥3 个（原文 / prompt / 产出 / 对比） | `dist/拿来说明-01/02/03.md` | ✅ 3 个 |
 | 术语表 ≥50 条且**全文一致** | `dist/术语表.md`（100 条 + 47 条不译词）、`quality/术语三词一致性审计.md`（**0 违规**） | ✅ |
 | 覆盖课程主体内容 ≥80% | `quality/coverage.md`（段落级 **97.1%**；30/34 篇完整译文） | ✅ |
-| 流水线可复跑 / 换课可复用 | `tools/01→11` + `glossary.json`，见本文第三、四节 | ✅ |
+| 流水线可复跑 / 换课可复用 | `tools/01→13` + `glossary.json`，见本文第三、四节 | ✅ |
 | 陌生人可独立使用 | 根 `README.md` §2 目录结构 + §3 三分钟上手 + 本文第二节 | ✅ |
 
 > 红线条目（① 必需交付物缺失 ② 无 AI 日志 / AAR）逐项已核对：**均不存在**。

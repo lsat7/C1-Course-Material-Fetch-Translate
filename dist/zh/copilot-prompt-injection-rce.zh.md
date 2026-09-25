@@ -2,7 +2,7 @@
 
 # GitHub Copilot：通过提示词注入实现远程代码执行（CVE-2025-53773）· Embrace The Red
 
-# Embrace The Red
+Embrace The Red
 
 wunderwuzzi 的博客
 

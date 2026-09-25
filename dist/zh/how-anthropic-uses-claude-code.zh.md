@@ -1,6 +1,6 @@
 <!-- source: pdfs/how-anthropic-uses-claude-code.pdf pages=23 -->
 
-# how-anthropic-uses-claude-code
+# Anthropic 团队如何使用 Claude Code
 
 Anthropic 团队如何使用 Claude Code
 

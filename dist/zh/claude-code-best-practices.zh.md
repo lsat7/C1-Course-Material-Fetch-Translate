@@ -223,6 +223,7 @@ CLAUDE.md 是一个放在项目根目录的 markdown 文件，Claude Code 会在
 
 Claude Code 可组合，并遵循 Unix 哲学。把日志通过管道传给它，在 CI 中运行它，或者把它与其他工具串联起来：
 
+```bash
 # Analyze recent log output
 tail -200 app.log | claude -p "Slack me if you see any anomalies"
 
@@ -231,6 +232,7 @@ claude -p "translate new strings into French and raise a PR for review"
 
 # Bulk operations across files
 git diff main --name-only | claude -p "review these changed files for security issues"
+```
 
 完整的命令与参数列表见 CLI 参考文档。
 

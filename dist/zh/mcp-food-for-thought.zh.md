@@ -2,7 +2,7 @@
 
 # API 并不适合做成 MCP 工具
 
-# Reilly Wood
+Reilly Wood
 
 ## API 并不适合做成 MCP 工具
 

@@ -2,7 +2,7 @@
 
 # 软件团队的代码评审要点 » Blake Smith
 
-# Blake Smith
+Blake Smith
 
 ## 创造。编码。学习。
 

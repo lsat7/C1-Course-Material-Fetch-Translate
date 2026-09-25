@@ -1,0 +1,7 @@
+﻿# 中间产物（可由 tools/01→05 重建，不入库）
+work/
+__pycache__/
+*.pyc
+# 含 API Key 的本地探测脚本（严禁入库）
+_probe*.py
+tools/_*.py
